@@ -1,0 +1,111 @@
+<!-- Navigation-->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <div>
+            <style>
+                .nav-item.no-marker {
+                    list-style-type: none;
+                }
+            </style>
+            {% if user.is_authenticated %}
+                <li class="nav-item no-marker"><a class="nav-link"> سلام {{ user.username }} عزیز
+                    </a></li>
+            {% endif %}
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span
+                class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">خانه</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">درباره </a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">خارج شوید </a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}"><span class="small-link">ثبت نام</span></a>
+                    </li>
+                    <span class="separator"> | </span>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><span
+                            class="small-link">ورود</span></a></li>
+                {% endif %}
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="{% url 'index' %}" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">دسته بندی ها</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'index' %}">همه محصولات</a></li>
+                        <li>
+                            <hr class="dropdown-divider"/>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'لپ-تاپ' %}">لپ تاپ ها </a></li>
+                        <li><a class="dropdown-item" href="{% url 'category' 'موبایل' %}">موبایل ها </a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <a href="{% url 'cart_summery' %}" class="btn btn-outline-dark">
+                    <i class="bi-cart-fill me-1"></i>
+                    سبد خرید
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </a>
+            </form>
+        </div>
+
+    </div>
+
+</nav>
+
+
+{#<nav class="navbar navbar-expand-lg navbar-light bg-light">#}
+{#    <div class="container-fluid">#}
+{#        {% if user.is_authenticated %}#}
+{#            <li class="nav-item no-marker"><a class="nav-link">{{ user.username }} خوش#}
+{#                اومدی</a></li>#}
+{#        {% endif %}#}
+{#        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"#}
+{#                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#        <div class="collapse navbar-collapse" id="navbarNav">#}
+{#            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">#}
+{#                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">خانه</a></li>#}
+{#                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">درباره </a></li>#}
+{#                {% if user.is_authenticated %}#}
+{#                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">خارج شوید </a></li>#}
+{#                    <li class="nav-item no-marker"><a class="nav-link">{{ user.username }} خوش اومدی</a></li>#}
+{#                {% else %}#}
+{#                    <li class="nav-item"><a class="nav-link" href="{% url 'register' %}"><span class="small-link">ثبت نام</span></a>#}
+{#                    </li>#}
+{#                    <span class="separator"> | </span>#}
+{#                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><span#}
+{#                            class="small-link">ورود</span></a></li>#}
+{#                {% endif %}#}
+{#                <li class="nav-item dropdown">#}
+{#                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+{#                       data-bs-toggle="dropdown" aria-expanded="false">#}
+{#                        فروشگاه#}
+{#                    </a>#}
+{#                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                        <li><a class="dropdown-item" href="#!">محصولات</a></li>#}
+{#                        <li>#}
+{#                            <hr class="dropdown-divider">#}
+{#                        </li>#}
+{#                        <li><a class="dropdown-item" href="#!">پرفروش ترین ها</a></li>#}
+{#                        <li><a class="dropdown-item" href="#!">جدیدترین ها</a></li>#}
+{#                    </ul>#}
+{#                </li>#}
+{#            </ul>#}
+{##}
+{#            <form class="d-flex">#}
+{#                <button class="btn btn-outline-dark" type="submit">#}
+{#                    <i class="bi-cart-fill me-1"></i>#}
+{#                    سبد خرید#}
+{#                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>#}
+{#                </button>#}
+{#            </form>#}
+{##}
+{#        </div>#}
+{#    </div>#}
+{#</nav>#}

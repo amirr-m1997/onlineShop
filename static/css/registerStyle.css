@@ -1,0 +1,36 @@
+body {
+    direction: rtl;
+    text-align: right;
+}
+
+.card {
+    text-align: right;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+}
+
+.btn-container {
+    display: flex;
+    gap: 10px; /* فاصله بین دکمه‌ها */
+}
+
+.btn-dark a {
+    color: white;
+    text-decoration: none; /* حذف زیرخط */
+}
+
+.btn-dark a:hover {
+    text-decoration: none; /* حذف زیرخط هنگام هاور */
+}
+
+.forgot-usr-pwd a,
+p a {
+    text-decoration: none; /* حذف زیرخط */
+}
+.forgot-usr-pwd a:hover,
+p a:hover {
+    text-decoration: none; /* حذف زیرخط هنگام هاور */
+}

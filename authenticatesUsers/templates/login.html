@@ -1,0 +1,141 @@
+﻿{#<!DOCTYPE HTML>#}
+{#<html dir="ltr" lang="fa">#}
+{#	<head>#}
+{#		<meta charset="utf-8" />#}
+{#        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />#}
+{#        <meta name="description" content="" />#}
+{#        <meta name="author" content="" />#}
+{#		<title>ورود به پنل کاربری</title>#}
+{#		{% load static %}#}
+{#		<link href="{% static 'css/style.css' %}" rel="stylesheet" />#}
+{#		<link href="{% static 'css/fallback.css' %}" rel="stylesheet" />#}
+{##}
+{#	</head>#}
+{#	<body>#}
+{#		<div id="container">#}
+{#			<form action="{% url 'login' %}" method="POST">#}
+{#                {% csrf_token %}#}
+{#				<div class="login">ورود به حساب</div>#}
+{#				<div class="username-text"> : نام کاربری یا ایمیل   </div>#}
+{#				<div class="password-text">: رمز عبور</div>#}
+{#				<div class="username-field">#}
+{#					<input type="text" name="user_name" id="username" value="" placeholder="نام کاربری را وارد کنید"/>#}
+{#				</div>#}
+{#				<div class="password-field">#}
+{##}
+{#					<input type="password" name="password" id="password" value="" placeholder="رمز را وارد کنید"/>#}
+{#                    <br><br><br><br><br><br>#}
+{#                    <div class="show-password" onclick="togglePassword()">نمایش رمز</div>#}
+{#				</div>#}
+{#				<input type="checkbox" name="rememberme" id="remember-me" /><label for="remember-me">منو بشناس</label>#}
+{##}
+{#                <div class="register"><a href="{% url 'register' %}">اکانتی ندارید؟ثبت نام کنید</a></div>#}
+{##}
+{#				<div class="forgot-usr-pwd">  <a href="#">رمز رو فراموش کردم</a> </div>#}
+{#                <div class="forgot-usr-pwd"><a href="{% url 'password_reset' %}">رمز رو فراموش کردم</a></div>#}
+{##}
+{#				<input type="submit" name="submit" value="ورود" />#}
+{#			</form>#}
+{#		</div>#}
+{#        <script src="{% static 'js/jquery-1.7.1.min.js' %}"></script>#}
+{#		<script src="{% static 'js/selectivizr.js' %}"></script>#}
+{#    <script>#}
+{#    function togglePassword() {#}
+{#        var passwordField = document.getElementById("password");#}
+{#        var passwordFieldType = passwordField.getAttribute("type");#}
+{#        if (passwordFieldType === "password") {#}
+{#            passwordField.setAttribute("type", "text");#}
+{#        } else {#}
+{#            passwordField.setAttribute("type", "password");#}
+{#        }#}
+{#    }#}
+{#</script>#}
+{##}
+{#	</body>#}
+{#</html>#}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="{% static 'css/registerStyle.css' %}" rel="stylesheet" />
+    <style>
+    </style>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <form class="col-6 mx-auto card p-3 shadow-lg" action="{% url 'login' %}" method="POST"
+          enctype="multipart/form-data">
+        <h1 style="text-align: center;"><span >فروشگاه </span></h1>
+        {% csrf_token %}
+        <h3>فرم ورود</h3>
+        <hr>
+        {% if messages %}
+            <div class="alert alert-danger" role="alert" id="success-message">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="form-group">
+            <label for="exampleInputEmail1">نام کاربری</label>
+            <input type="text" class="form-control" name="user_name" id="exampleInputEmail1"
+                   aria-describedby="emailHelp"
+                   placeholder="نام کاربری خود را وارد کنید" required>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">رمز عبور</label>
+            <div class="input-group">
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                       placeholder="رمز خود را وارد کنید" required>
+                <div class="input-group-append">
+                    <span class="input-group-text show-password" onclick="togglePassword()">
+                        <i class="fa fa-eye" id="togglePasswordIcon"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="forgot-usr-pwd"><a href="{% url 'password_reset' %}">رمز خود را فراموش کردم!</a></div>
+        <br>
+        <p>اکانتی ندارید؟ <a href="/register/">ثبت نام</a></p>
+        <div class="btn-container">
+            <button type="submit" class="btn btn-primary"> ورود و ادامه</button>
+            <button type="button" class="btn btn-dark"><a href="/">بازگشت به صفحه اصلی</a></button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function togglePassword() {
+        var passwordField = document.getElementById("exampleInputPassword1");
+        var passwordFieldType = passwordField.getAttribute("type");
+        var togglePasswordIcon = document.getElementById("togglePasswordIcon");
+        if (passwordFieldType === "password") {
+            passwordField.setAttribute("type", "text");
+            togglePasswordIcon.classList.remove("fa-eye");
+            togglePasswordIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.setAttribute("type", "password");
+            togglePasswordIcon.classList.remove("fa-eye-slash");
+            togglePasswordIcon.classList.add("fa-eye");
+        }
+    }
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+            var successMessage = document.getElementById("success-message");
+            if (successMessage) {
+                successMessage.style.display = "none";
+            }
+        }, 5000); // 5000 milliseconds = 5 seconds
+    });
+</script>
+</body>
+</html>
