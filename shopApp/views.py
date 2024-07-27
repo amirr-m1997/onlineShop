@@ -1,18 +1,23 @@
 from django.contrib import messages
-from .models import Product, Customer, Order, Category
+from .models import Product, Customer, Order, Category, Size,Color,Tedad
 from django.shortcuts import render, redirect
-
+from django.shortcuts import render, get_object_or_404
 
 
 def index(request):
     all_products = Product.objects.all()
     return render(request, 'index.html', {'all_products': all_products})
 
-def product(request, pk):
-    product = Product.objects.get(id=pk)
-    return render(request,'product.html', {'product': product})
 
-    
+def product(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    product_data = Product.objects.filter(id=pk).values()
+    sizes = Size.objects.all().values('id', 'name')
+    colors = Color.objects.all().values('id', 'name')
+    tedads = Tedad.objects.all().values('id', 'name')
+    return render(request, 'product.html', {'product': product, 'sizes': sizes, 'colors': colors, 'tedads': tedads})
+
+
 
 def about(request):
     return render(request, 'about.html')

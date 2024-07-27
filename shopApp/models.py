@@ -27,19 +27,50 @@ class Customer(models.Model):
         verbose_name_plural = "مشتری ها"
 
 
+class Size(models.Model):
+    name = models.CharField("اندازه", max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "اندازه"
+        verbose_name_plural = "اندازه‌ها"
+
+
+class Color(models.Model):
+    name = models.CharField("رنگ", max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "رنگ"
+        verbose_name_plural = "رنگ‌ها"
+
+
+class Tedad(models.Model):
+    name = models.CharField("تعداد", max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "تعداد"
+        verbose_name_plural = "تعداد"
+
+
 class Product(models.Model):
     name = models.CharField("نام", max_length=250)
     description = models.TextField("توضیحات", blank=True, default='')
     price = models.IntegerField("قیمت")
     picture = models.ImageField("تصویر محصول", upload_to="media/products/")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1, verbose_name="دسته‌بندی")
-    sizes = (
-        ('S', '32'),
-        ('M', '42'),
-        ('L', '48'),
-        ('XL', '52'),
-    )
-    size = models.CharField("اندازه", max_length=10, choices=sizes, default='M')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1, verbose_name="دسته‌بندی")#با حذف کتگوری اصلی کل اطلاعات پاک میشود
+
+    size = models.ForeignKey(Size, on_delete=models.SET_NULL,null=True, blank=True, verbose_name="اندازه‌ها")
+    color = models.ForeignKey(Color, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="رنگ")
+    tedad = models.ForeignKey(Tedad, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="تعداد")#با حذف مدل اصلی اطللاعات بقیه پاک نمیشود
+
     is_sale = models.BooleanField("تخفیف‌دار", default=False)
     sale_price = models.DecimalField("قیمت با تخفیف", max_digits=20, decimal_places=3, default=0)
     star = models.IntegerField("ستاره", default=0, validators=[MinValueValidator(0), MaxValueValidator(5)])
@@ -50,7 +81,6 @@ class Product(models.Model):
     class Meta:
         verbose_name = "محصول"
         verbose_name_plural = "محصولات"
-
 
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,verbose_name="محصول")

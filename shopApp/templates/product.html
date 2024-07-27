@@ -3,15 +3,16 @@
 
 {% block content %}
     <br><br><br><br><br>
+    <div id="success-message" class="alert alert-success" style="display: none;"></div>
     <div class="container">
         <div class="card mb-3">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img src="{{ product.picture.url }}" class="img-fluid rounded-start" alt="...">
+                    <img src="{{ product.picture.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
                 </div>
                 <div class="col-md-8">
-                    <div class="badge bg-dark text-white position-absolute"
-                         style="top: 0.5rem; right: 0.5rem">تخفیف ویژه
+                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">تخفیف
+                        ویژه
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
@@ -23,12 +24,44 @@
                         {% else %}
                             <p class="card-text">{{ product.price|floatformat:3|intcomma }} تومان </p>
                         {% endif %}
+                        <div class="container">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                    <label for="number-product" class="form-label">تعداد قابل انتخاب:</label>
+                                    <select class="form-select" id="number-product" name="product_number" onclick="">
+                                        <option selected disabled></option>
+                                        {% for tedad in tedads %}
+                                            <option value="{{ tedad.name }}">{{ tedad.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                    <label for="size-product" class="form-label">سایزهای موجود:</label>
+                                    <select class="form-select" id="size-product" name="product_size" onclick="">
+                                        <option selected>باز کنید</option>
+                                        {% for size in sizes %}
+                                            <option value="{{ size.name }}">{{ size.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-3 mb-2 mb-md-0">
+                                    <label for="color-product" class="form-label">رنگ های موجود:</label>
+                                    <select class="form-select" id="color-product" name="product_color" onclick="">
+                                        <option selected disabled></option>
+                                        {% for color in colors %}
+                                            <option value="{{ color.name }}">{{ color.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                         <br><br><br>
-                        <button class="btn btn-dark" type="button" value="{{ product.id }}" id="add-cart" >
+                        <br><br><br>
+                        <button class="btn btn-dark" type="button" value="{{ product.id }}" id="add-cart">
                             اضافه کردن به سبد خرید
                         </button>
-                        <button type="button" class="btn btn-primary">
-                            <a href="/" style="color: white; text-decoration: none">بازگشت به صفحه محصول</a>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='/'">
+                            بازگشت به صفحه محصول
                         </button>
                     </div>
                 </div>
@@ -39,8 +72,39 @@
         </div>
     </div>
     <script>
+        $('#add-cart').click(function () {
+            var product_id = $(this).val();
+            var product_size = $('#size-product').val();
+            var product_color = $('#color-product').val();
+            var product_number = $('#number-product').val();
 
+            if (!product_id || !product_size || !product_color || !product_number) {
+                alert('لطفا تمامی فیلدها را پر کنید.');
+                return;
+            }
+            $.ajax({
+                url: '{% url 'cart_add' %}',
+                type: 'POST',
+                data: {
+                    'action': 'post',
+                    'product_id': product_id,
+                    'product_size': product_size, // Add this
+                    'product_color': product_color, // Add this
+                    'product_number': product_number, // Add this
+                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token for security
+                },
+                success: function (response) {
+                    if (response.error) {
+                        alert(response.error);
+                    } else {
+                        $('#success-message').text('محصول با موفقیت به سبد خرید اضافه شد.').show();
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('خطایی در ارسال درخواست رخ داده است.');
+                }
+            });
+        });
     </script>
-    <br><br><br><br><br><br><br><br><br><br><br>
 {% endblock %}
 

@@ -1,3 +1,87 @@
+{#{% extends 'base.html' %}#}
+{#{% load humanize %}#}
+{#{% load static %}#}
+{#{% block content %}#}
+{#    <!-- Header-->#}
+{#    <header class="bg-dark py-5">#}
+{#        <div class="container px-4 px-lg-5 my-5">#}
+{#            <div class="text-center text-white">#}
+{#                <h1 class="display-4 fw-bolder">سبد خرید</h1>#}
+{#                <p class="lead fw-normal text-white-50 mb-0">سایت فروشگاه </p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </header>#}
+{#    <br>#}
+{#    {% if cart_products %}#}
+{#        {% for product in cart_products %}#}
+{#            <div class="container">#}
+{#                <div class="card mb-3">#}
+{#                    <div class="row g-0">#}
+{#                        <div class="col-md-4">#}
+{#                            <img src="{{ product.picture.url }}" class="img-fluid rounded-start"#}
+{#                                 alt="{{ product.name }}">#}
+{##}
+{#                        </div>#}
+{#                        <div class="col-md-8">#}
+{#                            <div class="badge bg-dark text-white position-absolute"#}
+{#                                 style="top: 0.5rem; right: 0.5rem">تخفیف ویژه#}
+{#                            </div>#}
+{#                            <div class="card-body">#}
+{#                                <h5 class="card-title">{{ product.name }}</h5>#}
+{#                                <p class="card-text">{{ product.description }}</p>#}
+{#                                {% if product.is_sale %}#}
+{#                                    <p class="card-text"> 💰 قیمت با تخفیف : <strike#}
+{#                                            style="color: red"> {{ product.price|floatformat:3|intcomma }}</strike>#}
+{#                                        - {{ product.sale_price|floatformat:3|intcomma }}</p>#}
+{#                                {% else %}#}
+{#                                    <p class="card-text">{{ product.price|floatformat:3|intcomma }} تومان </p>#}
+{#                                {% endif %}#}
+{#                                <p class="card-text">تعداد :#}
+{#                                    {% for key, value in quantities.items %}#}
+{#                                        {% if key == product.id|stringformat:"s" %}#}
+{#                                            {{ value.quantity }}#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </p>#}
+{#                                <p class="card-text">رنگ :#}
+{#                                    {% for key, value in color.items %}#}
+{#                                        {% if key == product.id|stringformat:"s" %}#}
+{#                                            {{ value.color }}#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </p>#}
+{#                                <p class="card-text">اندازه :#}
+{#                                    {% for key, value in size.items %}#}
+{#                                        {% if key == product.id|stringformat:"s" %}#}
+{#                                            {{ value.size }}#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </p>#}
+{#                                <br><br><br>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#        <div class="container" dir="ltr">#}
+{#            <button type="button" class="btn btn-primary" onclick="window.history.back()">#}
+{#                بازگشت به صفحه قبل#}
+{#            </button>#}
+{#            <button type="button" class="btn btn-primary">#}
+{#                ادامه خرید#}
+{#            </button>#}
+{#        </div>#}
+{#    {% else %}#}
+{#        <center><h3 class="container" style="color: red">#}
+{#            سبد خرید شما خالیست! &#128531;#}
+{#        </h3></center>#}
+{#    {% endif %}#}
+{##}
+{#    <br>#}
+{#{% endblock %}#}
+
+
 {% extends 'base.html' %}
 {% load humanize %}
 {% load static %}
@@ -7,9 +91,182 @@
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
                 <h1 class="display-4 fw-bolder">سبد خرید</h1>
-                <p class="lead fw-normal text-white-50 mb-0">سایت فروشگاه لباس</p>
+                <p class="lead fw-normal text-white-50 mb-0">سایت فروشگاه </p>
             </div>
         </div>
     </header>
-    <!-- Section-->
+    <br>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% if cart_products %}
+        {% for product in cart_products %}
+            <div class="container">
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{ product.picture.url }}" class="img-fluid rounded-start"
+                                 alt="{{ product.name }}">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">
+                                تخفیف ویژه
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">{{ product.description }}</p>
+                                {% if product.is_sale %}
+                                    <p class="card-text"> 💰 قیمت با تخفیف : <strike
+                                            style="color: red"> {{ product.price|floatformat:3|intcomma }}</strike>
+                                        - {{ product.sale_price|floatformat:3|intcomma }}</p>
+                                {% else %}
+                                    <p class="card-text">{{ product.price|floatformat:3|intcomma }} تومان </p>
+                                {% endif %}
+                                <p class="card-text">تعداد :
+                                    {% for key, value in quantities.items %}
+                                        {% if key == product.id|stringformat:"s" %}
+                                            {{ value.quantity }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <p class="card-text">رنگ :
+                                    {% for key, value in color.items %}
+                                        {% if key == product.id|stringformat:"s" %}
+                                            {{ value.color }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <p class="card-text">اندازه :
+                                    {% for key, value in size.items %}
+                                        {% if key == product.id|stringformat:"s" %}
+                                            {{ value.size }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <br><br><br>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#editModal{{ product.id }}">
+                                    ویرایش
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Modal -->
+            <div class="modal fade" id="editModal{{ product.id }}" tabindex="-1"
+                 aria-labelledby="editModalLabel{{ product.id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel{{ product.id }}">ویرایش محصول</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="{% url 'cart_edit' product.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <div class="mb-3">
+                                    <label for="quantity{{ product.id }}" class="form-label">تعداد</label>
+                                    <select class="form-select" id="tedad{{ product.id }}" name="tedad" required>
+                                        {% for tedad in tedads %}
+                                            <option value="{{ tedad.name }}">{{ tedad.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="size{{ product.id }}" class="form-label">سایز</label>
+                                    <select class="form-select" id="size{{ product.id }}" name="size" required>
+                                        {% for size in sizes %}
+                                            <option value="{{ size.name }}">{{ size.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="color{{ product.id }}" class="form-label">رنگ</label>
+                                    <select class="form-select" id="color{{ product.id }}" name="color" required>
+                                        {% for color in colors %}
+                                            <option value="{{ color.name }}">{{ color.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن
+                                    </button>
+                                    {#                                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>#}
+                                    <button class="btn btn-primary" type="button" value="{{ product.id }}"
+                                            id="save-changes-btn">
+                                        ذخیره تغییرات
+                                    </button>
+
+                                    {#                                    <button class="btn btn-primary" type="button" value="{{ product.id }}"#}
+                                    {#                                            id="add-cart2">#}
+                                    {#                                        ذخیره تغییرات#}
+                                    {#                                    </button>#}
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="container" dir="ltr">
+            <button type="button" class="btn btn-primary" onclick="window.history.back()">بازگشت به صفحه قبل</button>
+            <button type="button" class="btn btn-primary">ادامه خرید</button>
+        </div>
+    {% else %}
+        <center><h3 class="container" style="color: red">سبد خرید شما خالیست! &#128531;</h3></center>
+    {% endif %}
+    <br>
+    <script>
+        // Function to handle updating the cart item
+            function updateCartItem(productId, quantity, size, color) {
+        $.ajax({
+            url: '{% url 'cart_update' %}',
+            type: 'POST',
+            data: {
+                'product_id': productId,
+                'quantity': quantity,
+                'size': size,
+                'color': color,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Update the UI with the new values
+                    // For example, you can update the quantity, size, and color elements in the cart item
+                    // You can also display a success message to the user
+                    alert('تغییرات با موفقیت ذخیره شد.');
+                    // Close the modal window
+                    $('#editModal' + productId).modal('hide');
+                } else {
+                    // Display an error message to the user
+                    alert(response.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('خطایی در ارسال درخواست رخ داده است.');
+            }
+        });
+    }
+
+        // Event listener for the "ذخیره تغییرات" button
+        $('#save-changes-btn').click(function () {
+            var productId = $(this).val();
+            var quantity = $('#tedad' + productId).val();
+            var size = $('#size' + productId).val();
+            var color = $('#color' + productId).val();
+
+            updateCartItem(productId, quantity, size, color);
+        });
+    </script>
+
 {% endblock %}
