@@ -27,6 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Application definition
+import django_ckeditor_5.fields
 
 INSTALLED_APPS = [
 
@@ -39,10 +40,14 @@ INSTALLED_APPS = [
     "admin_interface",
     "colorfield",
     'django.contrib.admin',
+    'django_ckeditor_5',
+    'azbankgateways',#ZARIN_PAL
     'shopApp',
     'authenticatesUsers',
     'cart',
+    'paymant',
 ]
+
 #   django.contrib.humanize مطالعه شود
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -129,6 +134,15 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+# جنگو اینترفیس
+#https://pypi.org/project/django-admin-interface/
+
+# برای تنظیم جیمیل به ادرس های زیر مراجعه شود
+# https://support.google.com/accounts/answer/185833#zippy=%2Cyou-still-cant-sign-in
+# https://myaccount.google.com/apppasswords?pli=1&rapt=AEjHL4PDpMZHMj9J3lk71jTWI9lK2sZkm3U3XPirDLm47dyPvQqX70gSwz5NBchg3_PNdJnPKI57SiZ9FzyoHv7oeJSdvJLrwxQikKXd9rrgdOPyHP7Vklk
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -137,10 +151,158 @@ EMAIL_HOST_USER = 'mkhmdyamyr8@gmail.com'
 EMAIL_HOST_PASSWORD = 'xrlp ncjo aplz fiov'
 DEFAULT_FROM_EMAIL = 'mkhmdyamyr8@gmail.com'
 
-# برای تنظیم جیمیل به ادرس های زیر مراجعه شود
-# https://support.google.com/accounts/answer/185833#zippy=%2Cyou-still-cant-sign-in
-# https://myaccount.google.com/apppasswords?pli=1&rapt=AEjHL4PDpMZHMj9J3lk71jTWI9lK2sZkm3U3XPirDLm47dyPvQqX70gSwz5NBchg3_PNdJnPKI57SiZ9FzyoHv7oeJSdvJLrwxQikKXd9rrgdOPyHP7Vklk
+
+# CKEditor تنظیمات
+# تنظیمات ckeditor
+#https://pypi.org/project/django-ckeditor-5/0.2.12/
+
+
+# CKEditor settings
 
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
+customColorPalette = [
+    {
+        'color': 'hsl(4, 90%, 58%)',
+        'label': 'Red'
+    },
+    {
+        'color': 'hsl(340, 82%, 52%)',
+        'label': 'Pink'
+    },
+    {
+        'color': 'hsl(291, 64%, 42%)',
+        'label': 'Purple'
+    },
+    {
+        'color': 'hsl(262, 52%, 47%)',
+        'label': 'Deep Purple'
+    },
+    {
+        'color': 'hsl(231, 48%, 48%)',
+        'label': 'Indigo'
+    },
+    {
+        'color': 'hsl(207, 90%, 54%)',
+        'label': 'Blue'
+    },
+]
+
+CKEDITOR_5_CUSTOM_CSS = 'path_to.css'  # optional
+# CKEDITOR_5_FILE_STORAGE = "path_to_storage.CustomStorage"  # optional - حذف یا کامنت کنید
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'language': 'fa',
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+    },
+    'extends': {
+        'language': 'fa',
+        'blockToolbar': [
+            'paragraph', 'heading1', 'heading2', 'heading3',
+            '|',
+            'bulletedList', 'numberedList',
+            '|',
+            'blockQuote',
+        ],
+        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+                    'code', 'subscript', 'superscript', 'highlight', '|', 'codeBlock', 'sourceEditing', 'insertImage',
+                    'bulletedList', 'numberedList', 'todoList', '|', 'blockQuote', 'imageUpload', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+                    'insertTable', ],
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side', '|'],
+            'styles': [
+                'full',
+                'side',
+                'alignLeft',
+                'alignRight',
+                'alignCenter',
+            ]
+        },
+        'table': {
+            'contentToolbar': ['tableColumn', 'tableRow', 'mergeTableCells',
+                               'tableProperties', 'tableCellProperties'],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            }
+        },
+        'heading': {
+            'options': [
+                {'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph'},
+                {'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1'},
+                {'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2'},
+                {'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3'}
+            ]
+        }
+    },
+    'list': {
+        'properties': {
+            'styles': 'true',
+            'startIndex': 'true',
+            'reversed': 'true',
+        }
+    }
+}
+
+
+
+AZ_IRANIAN_BANK_GATEWAYS = {
+    "GATEWAYS": {
+        "BMI": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "TERMINAL_CODE": "<YOUR TERMINAL CODE>",
+            "SECRET_KEY": "<YOUR SECRET CODE>",
+        },
+        "SEP": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "TERMINAL_CODE": "<YOUR TERMINAL CODE>",
+        },
+        "ZARINPAL": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "SANDBOX": 0,  # 0 disable, 1 active
+        },
+        "IDPAY": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "METHOD": "POST",  # GET or POST
+            "X_SANDBOX": 0,  # 0 disable, 1 active
+        },
+        "ZIBAL": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+        },
+        "BAHAMTA": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+        },
+        "MELLAT": {
+            "TERMINAL_CODE": "<YOUR TERMINAL CODE>",
+            "USERNAME": "<YOUR USERNAME>",
+            "PASSWORD": "<YOUR PASSWORD>",
+        },
+        "PAYV1": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "X_SANDBOX": 1,  # 0 disable, 1 active
+        },
+    },
+    "IS_SAMPLE_FORM_ENABLE": True,  # اختیاری و پیش فرض غیر فعال است
+    "DEFAULT": "BMI",
+    "CURRENCY": "IRR",  # اختیاری
+    "TRACKING_CODE_QUERY_PARAM": "tc",  # اختیاری
+    "TRACKING_CODE_LENGTH": 16,  # اختیاری
+    "SETTING_VALUE_READER_CLASS": "azbankgateways.readers.DefaultReader",  # اختیاری
+    "BANK_PRIORITIES": [
+        "BMI",
+        "SEP",
+        # and so on ...
+    ],  # اختیاری
+    "IS_SAFE_GET_GATEWAY_PAYMENT": False,  # اختیاری، بهتر است True بزارید.
+    "CUSTOM_APP": None,  # اختیاری
+}

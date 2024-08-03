@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="text-center">سفارش شما با موفقیت ثبت شد!</h2>
+                    </div>
+                    <div class="card-body shadow">
+                        <p class="text-center">شماره سفارش: <span class="font-weight-bold">{{ order_id }}</span></p>
+                        <p class="text-center">نام  محصول: <span class="font-weight-bold">{{ order_product }} </span></p>
+                        <p class="text-center">تاریخ سفارش: <span class="font-weight-bold">{{ order_date }}</span></p>
+                        <p class="text-center">مبلغ سفارش: <span class="font-weight-bold">{{ order_total }} تومان</span></p>
+                        <p class="text-center">تعداد سفارش: <span class="font-weight-bold">{{ order_quantity }} </span></p>
+                        <p class="text-center"> نام سفارش دهند: <span class="font-weight-bold">{{ orderCustomer }} </span></p>
+                        <p class="text-center">شماره تلفن: <span class="font-weight-bold">{{ order_phone }}</span></p>
+                        <p class="text-center">آدرس ارسال: <span class="font-weight-bold">{{ order_address }}</span></p>
+                    </div>
+                    <div class="card-footer bg-primary text-white">
+                        <p class="text-center">از خرید شما متشکریم!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -16,7 +16,7 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
+                        <p class="card-text">{{ product.description | safe }}</p>
                         {% if product.is_sale %}
                             <p class="card-text"> 💰 قیمت با تخفیف : <strike
                                     style="color: red"> {{ product.price|floatformat:3|intcomma }}</strike>
@@ -26,6 +26,7 @@
                         {% endif %}
                         <div class="container">
                             <div class="row align-items-center mb-3">
+
                                 <div class="col-12 col-md-3 mb-2 mb-md-0">
                                     <label for="number-product" class="form-label">تعداد قابل انتخاب:</label>
                                     <select class="form-select" id="number-product" name="product_number" onclick="">
@@ -57,18 +58,15 @@
                         </div>
                         <br><br><br>
                         <br><br><br>
-                        <button class="btn btn-dark" type="button" value="{{ product.id }}" id="add-cart">
+                        <button class="btn btn-success" type="button" value="{{ product.id }}" id="add-cart">
                             اضافه کردن به سبد خرید
                         </button>
-                        <button type="button" class="btn btn-primary" onclick="window.location.href='/'">
+                        <button type="button" class="btn btn-dark" onclick="window.location.href='/'">
                             بازگشت به صفحه محصول
                         </button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="btn-container">
-
         </div>
     </div>
     <script>
@@ -88,16 +86,20 @@
                 data: {
                     'action': 'post',
                     'product_id': product_id,
-                    'product_size': product_size, // Add this
-                    'product_color': product_color, // Add this
-                    'product_number': product_number, // Add this
-                    'csrfmiddlewaretoken': '{{ csrf_token }}' // Include CSRF token for security
+                    'product_size': product_size,
+                    'product_color': product_color,
+                    'product_number': product_number,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function (response) {
                     if (response.error) {
                         alert(response.error);
                     } else {
                         $('#success-message').text('محصول با موفقیت به سبد خرید اضافه شد.').show();
+                        setTimeout(function () {
+                            $('#success-message').fadeOut('slow');
+                        }, 4000);  // پیام پس از 4 ثانیه مخفی می‌شود
+                        $('#cart_quantity').text(response.cart_quantity);
                     }
                 },
                 error: function (xhr, status, error) {
@@ -106,5 +108,6 @@
             });
         });
     </script>
+
 {% endblock %}
 

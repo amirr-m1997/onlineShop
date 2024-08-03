@@ -1,7 +1,6 @@
 from django.apps import AppConfig
 
 
-class ShopappConfig(AppConfig):
+class PaymantConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'shopApp'
-
+    name = 'paymant'

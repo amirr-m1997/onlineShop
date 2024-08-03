@@ -1,96 +1,13 @@
-{#{% extends 'base.html' %}#}
-{#{% load humanize %}#}
-{#{% load static %}#}
-{#{% block content %}#}
-{#    <!-- Header-->#}
-{#    <header class="bg-dark py-5">#}
-{#        <div class="container px-4 px-lg-5 my-5">#}
-{#            <div class="text-center text-white">#}
-{#                <h1 class="display-4 fw-bolder">سبد خرید</h1>#}
-{#                <p class="lead fw-normal text-white-50 mb-0">سایت فروشگاه </p>#}
-{#            </div>#}
-{#        </div>#}
-{#    </header>#}
-{#    <br>#}
-{#    {% if cart_products %}#}
-{#        {% for product in cart_products %}#}
-{#            <div class="container">#}
-{#                <div class="card mb-3">#}
-{#                    <div class="row g-0">#}
-{#                        <div class="col-md-4">#}
-{#                            <img src="{{ product.picture.url }}" class="img-fluid rounded-start"#}
-{#                                 alt="{{ product.name }}">#}
-{##}
-{#                        </div>#}
-{#                        <div class="col-md-8">#}
-{#                            <div class="badge bg-dark text-white position-absolute"#}
-{#                                 style="top: 0.5rem; right: 0.5rem">تخفیف ویژه#}
-{#                            </div>#}
-{#                            <div class="card-body">#}
-{#                                <h5 class="card-title">{{ product.name }}</h5>#}
-{#                                <p class="card-text">{{ product.description }}</p>#}
-{#                                {% if product.is_sale %}#}
-{#                                    <p class="card-text"> 💰 قیمت با تخفیف : <strike#}
-{#                                            style="color: red"> {{ product.price|floatformat:3|intcomma }}</strike>#}
-{#                                        - {{ product.sale_price|floatformat:3|intcomma }}</p>#}
-{#                                {% else %}#}
-{#                                    <p class="card-text">{{ product.price|floatformat:3|intcomma }} تومان </p>#}
-{#                                {% endif %}#}
-{#                                <p class="card-text">تعداد :#}
-{#                                    {% for key, value in quantities.items %}#}
-{#                                        {% if key == product.id|stringformat:"s" %}#}
-{#                                            {{ value.quantity }}#}
-{#                                        {% endif %}#}
-{#                                    {% endfor %}#}
-{#                                </p>#}
-{#                                <p class="card-text">رنگ :#}
-{#                                    {% for key, value in color.items %}#}
-{#                                        {% if key == product.id|stringformat:"s" %}#}
-{#                                            {{ value.color }}#}
-{#                                        {% endif %}#}
-{#                                    {% endfor %}#}
-{#                                </p>#}
-{#                                <p class="card-text">اندازه :#}
-{#                                    {% for key, value in size.items %}#}
-{#                                        {% if key == product.id|stringformat:"s" %}#}
-{#                                            {{ value.size }}#}
-{#                                        {% endif %}#}
-{#                                    {% endfor %}#}
-{#                                </p>#}
-{#                                <br><br><br>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        {% endfor %}#}
-{#        <div class="container" dir="ltr">#}
-{#            <button type="button" class="btn btn-primary" onclick="window.history.back()">#}
-{#                بازگشت به صفحه قبل#}
-{#            </button>#}
-{#            <button type="button" class="btn btn-primary">#}
-{#                ادامه خرید#}
-{#            </button>#}
-{#        </div>#}
-{#    {% else %}#}
-{#        <center><h3 class="container" style="color: red">#}
-{#            سبد خرید شما خالیست! &#128531;#}
-{#        </h3></center>#}
-{#    {% endif %}#}
-{##}
-{#    <br>#}
-{#{% endblock %}#}
-
-
 {% extends 'base.html' %}
 {% load humanize %}
 {% load static %}
 {% block content %}
     <!-- Header-->
-    <header class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
+    <!-- Header-->
+    <header class="bg-dark py-3">
+        <div class="container px-4 px-lg-5 my-4">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">سبد خرید</h1>
+                <h2 class="display-5 fw-bolder">سبد خرید</h2>
                 <p class="lead fw-normal text-white-50 mb-0">سایت فروشگاه </p>
             </div>
         </div>
@@ -104,10 +21,17 @@
             </div>
         {% endfor %}
     {% endif %}
+    {% if request.GET.message == 'deleted' %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="delete-message">
+            محصول با موفقیت از سبد خرید شما حذف شد.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
     {% if cart_products %}
         {% for product in cart_products %}
             <div class="container">
-                <div class="card mb-3">
+                <br>
+                <div class="card mb-3 shadow">
                     <div class="row g-0">
                         <div class="col-md-4">
                             <img src="{{ product.picture.url }}" class="img-fluid rounded-start"
@@ -119,7 +43,7 @@
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title">{{ product.name }}</h5>
-                                <p class="card-text">{{ product.description }}</p>
+                                <p class="card-text">{{ product.description |safe }}</p>
                                 {% if product.is_sale %}
                                     <p class="card-text"> 💰 قیمت با تخفیف : <strike
                                             style="color: red"> {{ product.price|floatformat:3|intcomma }}</strike>
@@ -134,6 +58,7 @@
                                         {% endif %}
                                     {% endfor %}
                                 </p>
+
                                 <p class="card-text">رنگ :
                                     {% for key, value in color.items %}
                                         {% if key == product.id|stringformat:"s" %}
@@ -148,11 +73,21 @@
                                         {% endif %}
                                     {% endfor %}
                                 </p>
-                                <br><br><br>
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#editModal{{ product.id }}">
-                                    ویرایش
-                                </button>
+
+                                <div class="d-flex" dir="ltr">
+                                    <form action="{% url 'cart_delete' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                                        <button type="submit" class="btn btn-danger">
+                                            حذف
+                                        </button>
+                                    </form>
+                                    <button type="button" class="btn btn-primary me-2" data-bs-toggle="modal"
+                                            data-bs-target="#editModal{{ product.id }}">
+                                        ویرایش
+                                    </button>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -160,113 +95,205 @@
             </div>
 
             <!-- Edit Modal -->
+            <!-- Edit Modal -->
+            <!-- Edit Modal -->
+            <!-- Edit Modal -->
             <div class="modal fade" id="editModal{{ product.id }}" tabindex="-1"
                  aria-labelledby="editModalLabel{{ product.id }}" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel{{ product.id }}">ویرایش محصول</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <div class="modal-header bg-dark text-white">
+                            <h5 class="modal-title" id="editModalLabel{{ product.id }}"
+                                style="display: flex; align-items: center;">
+                                <i class="fas fa-edit me-2"></i>
+                                ویرایش محصول
+                            </h5>
+
                         </div>
                         <div class="modal-body">
-                            <form method="post" action="{% url 'cart_edit' product.id %}">
+                            <form id="edit-form-{{ product.id }}">
                                 {% csrf_token %}
                                 <input type="hidden" name="product_id" value="{{ product.id }}">
-                                <div class="mb-3">
-                                    <label for="quantity{{ product.id }}" class="form-label">تعداد</label>
-                                    <select class="form-select" id="tedad{{ product.id }}" name="tedad" required>
-                                        {% for tedad in tedads %}
-                                            <option value="{{ tedad.name }}">{{ tedad.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="quantity-{{ product.id }}" class="form-label">تعداد</label>
+                                            <select class="form-select" id="quantity-{{ product.id }}" name="quantity"
+                                                    required>
+                                                {% for tedad in tedads %}
+                                                    <option value="{{ tedad.name }}">{{ tedad.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="size-{{ product.id }}" class="form-label">سایز</label>
+                                            <select class="form-select" id="size-{{ product.id }}" name="size" required>
+                                                {% for size in sizes %}
+                                                    <option value="{{ size.name }}">{{ size.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="mb-3">
+                                            <label for="color-{{ product.id }}" class="form-label">رنگ</label>
+                                            <select class="form-select" id="color-{{ product.id }}" name="color"
+                                                    required>
+                                                {% for color in colors %}
+                                                    <option value="{{ color.name }}">{{ color.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label for="size{{ product.id }}" class="form-label">سایز</label>
-                                    <select class="form-select" id="size{{ product.id }}" name="size" required>
-                                        {% for size in sizes %}
-                                            <option value="{{ size.name }}">{{ size.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="color{{ product.id }}" class="form-label">رنگ</label>
-                                    <select class="form-select" id="color{{ product.id }}" name="color" required>
-                                        {% for color in colors %}
-                                            <option value="{{ color.name }}">{{ color.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن
-                                    </button>
-                                    {#                                    <button type="submit" class="btn btn-primary">ذخیره تغییرات</button>#}
-                                    <button class="btn btn-primary" type="button" value="{{ product.id }}"
-                                            id="save-changes-btn">
-                                        ذخیره تغییرات
-                                    </button>
-
-                                    {#                                    <button class="btn btn-primary" type="button" value="{{ product.id }}"#}
-                                    {#                                            id="add-cart2">#}
-                                    {#                                        ذخیره تغییرات#}
-                                    {#                                    </button>#}
-                                </div>
-
                             </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بستن</button>
+                            <button type="button" class="btn btn-success save-changes-btn"
+                                    data-product-id="{{ product.id }}">ذخیره تغییرات
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         {% endfor %}
-        <div class="container" dir="ltr">
-            <button type="button" class="btn btn-primary" onclick="window.history.back()">بازگشت به صفحه قبل</button>
-            <button type="button" class="btn btn-primary">ادامه خرید</button>
+        <!-- بخش مبلغ قابل پرداخت -->
+
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card text-center border border-secondary shadow">
+                        <div class="card-body">
+                            <h5 class="card-text text-primary"> تعداد کل محصولات : </h5>
+                            <h6 class="card-text text-success"> {{ total_products }}</h6>
+                            <h5 class="card-title text-primary">مبلغ قابل پرداخت :</h5>
+                            <h6 class="card-text text-success">{{ total_price | intcomma }} تومان</h6>
+                            <div class="mt-3" dir="ltr">
+                                <button type="button" class="btn btn-dark btn-sm" onclick="window.location.href='/'">
+                                    <i class="fas fa-arrow-left"></i> بازگشت به صفحه محصول
+                                </button>
+                                <!-- در فرم اصلی -->
+                                <!-- قالب قبلی، مثلاً product.html -->
+                                <button type="button" id="continue-shopping" class="btn btn-primary btn-sm"
+                                        onclick="window.location.href='{% url 'order' %}'">
+                                    <i class="fas fa-shopping-cart"></i> ادامه خرید
+                                </button>
+                                <!-- پنجره مودال -->
+
+
+                                {#                                <form id="paymentForm" method="POST" action="{% url 'payment_process' %}">#}
+                                {#                                    {% csrf_token %}#}
+                                {#                                    <button type="submit" class="btn btn-primary btn-sm">#}
+                                {#                                        <i class="fas fa-shopping-cart"></i> ادامه خرید#}
+                                {#                                    </button>#}
+                                {#                                </form>#}
+                            </div>
+
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                </div>
+            </div>
         </div>
+        <!-- پنجره مودال -->
+        <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="loginModalLabel">خطا</h5>
+                        {#                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بستن"></button>#}
+                    </div>
+                    <div class="modal-body text-danger">
+                        ابتدا باید وارد سایت شوید.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="loginButton">وارد شوید</button>
+                        <button type="button" class="btn btn-primary" id="registerButton">ثبت نام کنید</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     {% else %}
         <center><h3 class="container" style="color: red">سبد خرید شما خالیست! &#128531;</h3></center>
     {% endif %}
     <br>
     <script>
-        // Function to handle updating the cart item
-            function updateCartItem(productId, quantity, size, color) {
-        $.ajax({
-            url: '{% url 'cart_update' %}',
-            type: 'POST',
-            data: {
-                'product_id': productId,
-                'quantity': quantity,
-                'size': size,
-                'color': color,
-                'csrfmiddlewaretoken': '{{ csrf_token }}'
-            },
-            success: function (response) {
-                if (response.success) {
-                    // Update the UI with the new values
-                    // For example, you can update the quantity, size, and color elements in the cart item
-                    // You can also display a success message to the user
-                    alert('تغییرات با موفقیت ذخیره شد.');
-                    // Close the modal window
-                    $('#editModal' + productId).modal('hide');
-                } else {
-                    // Display an error message to the user
-                    alert(response.error);
+        function updateCartItem(productId, quantity, size, color) {
+            $.ajax({
+                url: '{% url 'cart_update' %}',
+                type: 'POST',
+                data: {
+                    'product_id': productId,
+                    'quantity': quantity,
+                    'size': size,
+                    'color': color,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('تغییرات با موفقیت ذخیره شد.');
+                        $('#editModal' + productId).modal('hide');
+                        location.reload(); // برای به‌روزرسانی صفحه بعد از ویرایش
+                    } else {
+                        alert(response.error);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('خطایی در ارسال درخواست رخ داده است.');
                 }
-            },
-            error: function (xhr, status, error) {
-                alert('خطایی در ارسال درخواست رخ داده است.');
+            });
+        }
+
+        $(document).ready(function () {
+            $('.save-changes-btn').click(function () {
+                var productId = $(this).data('product-id');
+                var quantity = $('#quantity-' + productId).val();
+                var size = $('#size-' + productId).val();
+                var color = $('#color-' + productId).val();
+
+                updateCartItem(productId, quantity, size, color);
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var deleteMessage = document.getElementById("delete-message");
+            if (deleteMessage) {
+                setTimeout(function () {
+                    deleteMessage.classList.remove('show');
+                }, 3000);
             }
         });
-    }
+    </script>
+    {#    بررسی اینکه در سایت ثبت نام کرده یا نه#}
+    <script>
+        document.getElementById('continue-shopping').onclick = function () {
+            var isAuthenticated = "{{ user.is_authenticated }}";
 
-        // Event listener for the "ذخیره تغییرات" button
-        $('#save-changes-btn').click(function () {
-            var productId = $(this).val();
-            var quantity = $('#tedad' + productId).val();
-            var size = $('#size' + productId).val();
-            var color = $('#color' + productId).val();
-
-            updateCartItem(productId, quantity, size, color);
-        });
+            if (isAuthenticated === "True") {
+                window.location.href = "{% url 'order' %}";
+            } else {
+                var myModal = new bootstrap.Modal(document.getElementById('loginModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+            }
+        };
+    </script>
+{#    آدرس صفحات ثبت نام و لاگین#}
+    <script>
+        document.getElementById('loginButton').onclick = function () {
+            window.location.href = "{% url 'login' %}";
+        };
+        document.getElementById('registerButton').onclick = function () {
+            window.location.href = "{% url 'register' %}";
+        };
     </script>
 
 {% endblock %}
